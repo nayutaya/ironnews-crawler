@@ -16,6 +16,11 @@ class Article(db.Model):
   title      = db.StringProperty(required = True)
   created_at = db.DateTimeProperty(required = True, auto_now_add = True)
 
+class Keyword(db.Model):
+  name       = db.StringProperty(required = True)
+  updated_at = db.DateTimeProperty(required = True)
+
+
 class ArticleManager:
   @classmethod
   def exist(cls, url):
@@ -32,6 +37,21 @@ class ArticleManager:
   def add(cls, url, title):
     if not cls.exist(url):
       cls.put(url, title)
+
+class KeywordManager:
+  @classmethod
+  def initialize(cls):
+    records = db.GqlQuery("SELECT * FROM Keyword").fetch(1000)
+    db.delete(records)
+    cls.put(u"鉄道")
+    cls.put(u"新幹線")
+
+  @classmethod
+  def put(cls, name):
+    keyword = Keyword(name = name, updated_at = datetime.datetime.now())
+    keyword.put()
+    return keyword
+
 
 class GoogleNews:
   @classmethod
@@ -65,6 +85,7 @@ class GoogleNews:
 print "Content-Type: text/plain"
 print ""
 
+KeywordManager.initialize()
 
 
 articles = GoogleNews.search(u"鉄道", 10)
