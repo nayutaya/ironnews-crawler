@@ -16,6 +16,35 @@ class Article(db.Model):
   title      = db.StringProperty(required = True)
   created_at = db.DateTimeProperty(required = True, auto_now_add = True)
 
+class GoogleNews:
+  @classmethod
+  def create_url(cls, keyword, num):
+    host = "v3.latest.ironnews-helper2.appspot.com"
+    base = "http://" + host + "/google-news/search"
+    params = {
+      "keyword": keyword.encode("utf-8"),
+      "num"    : str(num),
+    }
+    return base + "?" + urllib.urlencode(params)
+
+  @classmethod
+  def fetch(cls, keyword, num):
+    request = urllib2.Request(
+      url = cls.create_url(keyword, num))
+    request.add_header("User-Agent", "ironnews")
+
+    io = urllib2.urlopen(request)
+    try:
+      return io.read()
+    finally:
+      io.close()
+
+  @classmethod
+  def search(cls, keyword, num = 10):
+    json = cls.fetch(keyword, num)
+    return simplejson.loads(json)
+
+
 print "Content-Type: text/plain"
 print ""
 
@@ -24,28 +53,6 @@ print ""
 #article = Article(url = "hoge", title = "huga")
 #article.put()
 
-def create_url(keyword, num):
-  host = "v3.latest.ironnews-helper2.appspot.com"
-  params = {
-    "keyword": keyword.encode("utf-8"),
-    "num"    : str(num),
-  }
-  url = "http://" + host + "/google-news/search?" + urllib.urlencode(params)
-  return url
-
-def search_articles_by_google_news(keyword, num):
-  url = create_url(keyword, num)
-  request = urllib2.Request(url = url)
-  request.add_header("User-Agent", "ironnews")
-
-  io = urllib2.urlopen(request)
-  try:
-    json = io.read()
-  finally:
-    io.close()
-
-  obj = simplejson.loads(json)
-  return obj
 
 def exist_article(url):
   articles = db.GqlQuery("SELECT * FROM Article WHERE url = :1", url)
@@ -56,7 +63,7 @@ def add_article(url, title):
   article.put()
   return article
 
-articles = search_articles_by_google_news(u"鉄道", 10)
+articles = GoogleNews.search(u"鉄道", 10)
 for article in articles:
   url   = article["url"]
   title = article["title"]
