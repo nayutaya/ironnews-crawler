@@ -3,7 +3,9 @@
 import datetime
 from google.appengine.ext import db
 
-from keyword_model import Keyword
+class Keyword(db.Model):
+  name       = db.StringProperty(required = True)
+  updated_at = db.DateTimeProperty(required = True)
 
 class KeywordManager:
   @classmethod
