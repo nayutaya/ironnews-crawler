@@ -16,6 +16,23 @@ class Article(db.Model):
   title      = db.StringProperty(required = True)
   created_at = db.DateTimeProperty(required = True, auto_now_add = True)
 
+class ArticleManager:
+  @classmethod
+  def exist(cls, url):
+    articles = db.GqlQuery("SELECT * FROM Article WHERE url = :1", url)
+    return (articles.count(1) > 0)
+
+  @classmethod
+  def put(cls, url, title):
+    article = Article(url = url, title = title)
+    article.put()
+    return article
+
+  @classmethod
+  def add(cls, url, title):
+    if not cls.exist(url):
+      cls.put(url, title)
+
 class GoogleNews:
   @classmethod
   def create_url(cls, keyword, num):
@@ -48,20 +65,7 @@ class GoogleNews:
 print "Content-Type: text/plain"
 print ""
 
-#print "test"
 
-#article = Article(url = "hoge", title = "huga")
-#article.put()
-
-
-def exist_article(url):
-  articles = db.GqlQuery("SELECT * FROM Article WHERE url = :1", url)
-  return (articles.count(1) > 0)
-
-def add_article(url, title):
-  article = Article(url = url, title = title)
-  article.put()
-  return article
 
 articles = GoogleNews.search(u"鉄道", 10)
 for article in articles:
@@ -69,7 +73,6 @@ for article in articles:
   title = article["title"]
   print url
   print title.encode("utf-8")
-  print exist_article(url)
-  if not exist_article(url):
-    add_article(url, title)
-  print exist_article(url)
+  print ArticleManager.exist(url)
+  ArticleManager.add(url, title)
+  print ArticleManager.exist(url)
