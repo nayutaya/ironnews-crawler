@@ -52,6 +52,19 @@ class KeywordManager:
     keyword.put()
     return keyword
 
+  @classmethod
+  def get(cls):
+    keyword = db.GqlQuery("SELECT * FROM Keyword ORDER BY updated_at ASC LIMIT 1").get()
+    return keyword.name
+
+  @classmethod
+  def update(cls, name):
+    keyword = db.GqlQuery("SELECT * FROM Keyword WHERE name = :1 LIMIT 1", name).get()
+    if keyword is not None:
+      keyword.updated_at = datetime.datetime.now()
+      keyword.put()
+    return keyword
+
 
 class GoogleNews:
   @classmethod
@@ -85,10 +98,12 @@ class GoogleNews:
 print "Content-Type: text/plain"
 print ""
 
-KeywordManager.initialize()
+#KeywordManager.initialize()
 
+keyword = KeywordManager.get()
+print keyword.encode("utf-8")
 
-articles = GoogleNews.search(u"鉄道", 10)
+articles = GoogleNews.search(keyword, 10)
 for article in articles:
   url   = article["url"]
   title = article["title"]
@@ -97,3 +112,5 @@ for article in articles:
   print ArticleManager.exist(url)
   ArticleManager.add(url, title)
   print ArticleManager.exist(url)
+
+KeywordManager.update(keyword)
