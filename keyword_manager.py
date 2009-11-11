@@ -3,7 +3,7 @@
 import datetime
 from google.appengine.ext import db
 
-from keyword import Keyword
+from keyword_model import Keyword
 
 class KeywordManager:
   @classmethod
