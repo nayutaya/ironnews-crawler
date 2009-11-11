@@ -8,10 +8,10 @@ from keyword import Keyword
 class KeywordManager:
   @classmethod
   def initialize(cls):
-    records = db.GqlQuery("SELECT * FROM Keyword").fetch(1000)
-    db.delete(records)
-    cls.put(u"鉄道")
-    cls.put(u"新幹線")
+    all = db.GqlQuery("SELECT * FROM Keyword")
+    if all.count(1) == 0:
+      cls.put(u"鉄道")
+      cls.put(u"新幹線")
 
   @classmethod
   def put(cls, name):

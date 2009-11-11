@@ -10,7 +10,7 @@ from google_news import GoogleNews
 print "Content-Type: text/plain"
 print ""
 
-#KeywordManager.initialize()
+KeywordManager.initialize()
 
 keyword = KeywordManager.get()
 print keyword.encode("utf-8")
