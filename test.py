@@ -47,5 +47,22 @@ def search_articles_by_google_news(keyword, num):
   obj = simplejson.loads(json)
   return obj
 
+def exist_article(url):
+  articles = db.GqlQuery("SELECT * FROM Article WHERE url = :1", url)
+  return (articles.count(1) > 0)
+
+def add_article(url, title):
+  article = Article(url = url, title = title)
+  article.put()
+  return article
+
 articles = search_articles_by_google_news(u"鉄道", 10)
-print articles
+for article in articles:
+  url   = article["url"]
+  title = article["title"]
+  print url
+  print title.encode("utf-8")
+  print exist_article(url)
+  if not exist_article(url):
+    add_article(url, title)
+  print exist_article(url)
