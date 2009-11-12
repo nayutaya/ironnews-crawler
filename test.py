@@ -3,6 +3,7 @@
 import sys
 sys.path.append("lib")
 
+from article_manager import Article
 from article_manager import ArticleManager
 from keyword_manager import KeywordManager
 from google_news import GoogleNews
@@ -21,6 +22,6 @@ for article in articles:
   title = article["title"]
   print url
   print title.encode("utf-8")
-  ArticleManager.add(url, title)
+  ArticleManager.add(url, title, Article.CATEGORY_RAIL)
 
 KeywordManager.update(keyword)

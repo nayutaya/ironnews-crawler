@@ -3,9 +3,17 @@
 from google.appengine.ext import db
 
 class Article(db.Model):
+  CATEGORY_UNKNOWN = 0
+  CATEGORY_RAIL    = 1
+  CATEGORY_REST    = 2
+  STATE_UNREGISTERED = 0
+  STATE_REGISTERED   = 1
+
+  created_at = db.DateTimeProperty(required = True, auto_now_add = True)
   url        = db.StringProperty(required = True)
   title      = db.StringProperty(required = True)
-  created_at = db.DateTimeProperty(required = True, auto_now_add = True)
+  category   = db.IntegerProperty(required = True, default = CATEGORY_UNKNOWN)
+  state      = db.IntegerProperty(required = True, default = STATE_UNREGISTERED)
 
 class ArticleManager:
   @classmethod
@@ -14,12 +22,16 @@ class ArticleManager:
     return (articles.count(1) > 0)
 
   @classmethod
-  def put(cls, url, title):
-    article = Article(url = url, title = title)
+  def put(cls, url, title, category, state):
+    article = Article(
+      url      = url,
+      title    = title,
+      category = category,
+      state    = state)
     article.put()
     return article
 
   @classmethod
-  def add(cls, url, title):
+  def add(cls, url, title, category = Article.CATEGORY_UNKNOWN, state = Article.STATE_UNREGISTERED):
     if not cls.exist(url):
-      cls.put(url, title)
+      cls.put(url, title, category, state)
