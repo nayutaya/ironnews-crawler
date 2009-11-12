@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 import datetime
 from keyword_manager import KeywordManager
 from article_manager import ArticleManager
@@ -56,10 +57,21 @@ print "</table>"
 print "  <table border='1'>"
 
 for article in ArticleManager.latest(100):
+  url   = article.url.encode("utf-8")
+  title = article.title.encode("utf-8")
+  time  = (article.created_at + datetime.timedelta(hours = 9)).strftime("%Y-%m-%d %H:%M")
+  entry_url = re.sub(re.compile(r"^http://"), "http://b.hatena.ne.jp/entry/", url)
+  image_url = re.sub(re.compile(r"^http://"), "http://b.hatena.ne.jp/entry/image/http://", url)
   print "<tr>"
-  print " <td>" + (article.created_at + datetime.timedelta(hours = 9)).strftime("%Y-%m-%d %H:%M") + "</td>"
+  print " <td>" + time + "</td>"
   print " <td>"
-  print "  <a href='" + article.url.encode("utf-8") + "'>" + article.title.encode("utf-8") + "</a>" # FIXME: HTML escape
+  print "  <a href='" + entry_url + "'>"
+  print "   <img src='http://b.hatena.ne.jp/images/help/entry.gif' width='16' height='12' border='0'>"
+  print "  </a>"
+  print " </td>"
+  print " <td>"
+  print "  <a href='" + url + "'>" + title + "</a>" # FIXME: HTML escape
+  print "  <img src='" + image_url + "'>"
   print " </td>"
   print "</tr>"
 
