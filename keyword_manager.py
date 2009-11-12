@@ -33,3 +33,8 @@ class KeywordManager:
       keyword.updated_at = datetime.datetime.now()
       keyword.put()
     return keyword
+
+  @classmethod
+  def all(cls):
+    query = db.GqlQuery("SELECT * FROM Keyword ORDER BY updated_at DESC")
+    return [keyword for keyword in query]
