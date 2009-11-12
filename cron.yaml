@@ -1,0 +1,4 @@
+cron:
+- description: crawler-google-news
+  url: /crawler/google-news
+  schedule: every 5 minutes
