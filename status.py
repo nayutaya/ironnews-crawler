@@ -28,8 +28,30 @@ print "  </table>"
 
 print "  <h2>latest articles</h2>"
 
-print ArticleManager.category_stats()
-print ArticleManager.state_stats()
+category_stats = ArticleManager.category_stats()
+state_stats    = ArticleManager.state_stats()
+
+print "<table border='1'>"
+print " <tr>"
+print "  <th colspan='3'>カテゴリ</th>"
+print "  <th colspan='2'>状態</th>"
+print " </tr>"
+print " <tr>"
+print "  <th>不明</th>"
+print "  <th>鉄道</th>"
+print "  <th>非鉄</th>"
+print "  <th>未登録</th>"
+print "  <th>登録済</th>"
+print " </tr>"
+print " <tr>"
+print "  <td align='right'>" + str(category_stats["unknown"]) + "</td>"
+print "  <td align='right'>" + str(category_stats["rail"]) + "</td>"
+print "  <td align='right'>" + str(category_stats["rest"]) + "</td>"
+print "  <td align='right'>" + str(state_stats["unregistered"]) + "</td>"
+print "  <td align='right'>" + str(state_stats["registered"]) + "</td>"
+print " </tr>"
+print "</table>"
+
 
 print "  <table border='1'>"
 
