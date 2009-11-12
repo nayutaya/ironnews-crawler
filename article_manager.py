@@ -35,3 +35,7 @@ class ArticleManager:
   def add(cls, url, title, category = Article.CATEGORY_UNKNOWN, state = Article.STATE_UNREGISTERED):
     if not cls.exist(url):
       cls.put(url, title, category, state)
+
+  @classmethod
+  def latest(cls, limit):
+    return db.GqlQuery("SELECT * FROM Article ORDER BY created_at DESC").fetch(limit)
