@@ -12,7 +12,7 @@ handlers:
 - url: /robots.txt 
   static_files: public/robots.txt 
   upload: public/robots.txt 
-- url: /test
-  script: test.py
+- url: /crawler/google-news
+  script: crawler_google_news.py
 - url: /.*
   script: app.py
