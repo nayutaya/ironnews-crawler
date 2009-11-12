@@ -27,6 +27,10 @@ for keyword in KeywordManager.all():
 print "  </table>"
 
 print "  <h2>latest articles</h2>"
+
+print ArticleManager.category_stats()
+print ArticleManager.state_stats()
+
 print "  <table border='1'>"
 
 for article in ArticleManager.latest(100):
