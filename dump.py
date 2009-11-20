@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import timedelta
 from google.appengine.ext import db
 from article_manager import Article
 from article_manager import ArticleManager
@@ -18,10 +19,16 @@ def get_newest_date():
 print "Content-Type: text/plain"
 print ""
 
+oldest_date = get_oldest_date().date()
+newest_date = get_newest_date().date()
+days        = (newest_date - oldest_date).days + 1
+dates       = [oldest_date + timedelta(days = i) for i in range(days)]
+
 
 print "<ironnews-crawler>"
 
-print get_oldest_date()
-print get_newest_date()
+print oldest_date
+print newest_date
+print dates
 
 print "</ironnews-crawler>"
