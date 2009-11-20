@@ -14,6 +14,8 @@ handlers:
   upload: public/robots.txt 
 - url: /status
   script: status.py
+- url: /dump
+  script: dump.py
 - url: /crawler/google-news
   script: crawler_google_news.py
 - url: /.*
