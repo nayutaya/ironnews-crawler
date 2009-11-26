@@ -43,15 +43,15 @@ class ArticleManager:
   @classmethod
   def category_stats(cls):
     return {
-      "unknown": db.GqlQuery("SELECT * FROM Article WHERE category = :1", Article.CATEGORY_UNKNOWN).count(1000),
-      "rail"   : db.GqlQuery("SELECT * FROM Article WHERE category = :1", Article.CATEGORY_RAIL   ).count(1000),
-      "rest"   : db.GqlQuery("SELECT * FROM Article WHERE category = :1", Article.CATEGORY_REST   ).count(1000),
+      "unknown": db.GqlQuery("SELECT __key__ FROM Article WHERE category = :1", Article.CATEGORY_UNKNOWN).count(),
+      "rail"   : db.GqlQuery("SELECT __key__ FROM Article WHERE category = :1", Article.CATEGORY_RAIL   ).count(),
+      "rest"   : db.GqlQuery("SELECT __key__ FROM Article WHERE category = :1", Article.CATEGORY_REST   ).count(),
     }
 
   @classmethod
   def state_stats(cls):
     return {
-      "unregistered": db.GqlQuery("SELECT * FROM Article WHERE state = :1", Article.STATE_UNREGISTERED).count(1000),
-      "registered"  : db.GqlQuery("SELECT * FROM Article WHERE state = :1", Article.STATE_REGISTERED  ).count(1000),
+      "unregistered": db.GqlQuery("SELECT __key__ FROM Article WHERE state = :1", Article.STATE_UNREGISTERED).count(),
+      "registered"  : db.GqlQuery("SELECT __key__ FROM Article WHERE state = :1", Article.STATE_REGISTERED  ).count(),
     }
 
