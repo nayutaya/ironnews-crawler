@@ -8,7 +8,7 @@ from article_manager import ArticleManager
 from keyword_manager import KeywordManager
 from google_news import GoogleNews
 
-from bookmark_util import BookmarkUtil
+from bookmark_utility import BookmarkUtility
 
 print "Content-Type: text/plain"
 print ""
@@ -25,7 +25,7 @@ for article in articles:
   print "---"
   print url
   print title.encode("utf-8")
-  if BookmarkUtil.is_rejected_site(url):
+  if BookmarkUtility.reject(url):
     print "reject!"
   else:
     ArticleManager.add(url, title, Article.CATEGORY_RAIL)
