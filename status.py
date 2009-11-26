@@ -63,15 +63,17 @@ for article in ArticleManager.latest(100):
   entry_url = re.sub(re.compile(r"^http://"), "http://b.hatena.ne.jp/entry/", url)
   image_url = re.sub(re.compile(r"^http://"), "http://b.hatena.ne.jp/entry/image/http://", url)
   print "<tr>"
-  print " <td>" + time + "</td>"
+  print " <td><font size='-1'>" + time + "</font></td>"
+  print " <td>"
+  print "  <font size='-1'><a href='" + url + "'>" + title + "</a></font>" # FIXME: HTML escape
+  print " </td>"
   print " <td>"
   print "  <a href='" + entry_url + "'>"
-  print "   <img src='http://b.hatena.ne.jp/images/help/entry.gif' width='16' height='12' border='0'>"
+  print "   <img src='http://b.hatena.ne.jp/images/help/entry.gif' width='16' height='12' border='0' />"
   print "  </a>"
   print " </td>"
   print " <td>"
-  print "  <a href='" + url + "'>" + title + "</a>" # FIXME: HTML escape
-  print "  <img src='" + image_url + "'>"
+  print "  <img src='" + image_url + "' />"
   print " </td>"
   print "</tr>"
 
