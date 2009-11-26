@@ -27,7 +27,12 @@ for article in articles:
   print title.encode("utf-8")
   if BookmarkUtility.reject(url):
     print "reject!"
-  else:
-    ArticleManager.add(url, title, Article.CATEGORY_RAIL)
+    continue
+
+  url2 = BookmarkUtility.get_canonical_url(url)
+  if url2 != url:
+    print "canonical! " + url2
+
+  ArticleManager.add(url2, title, Article.CATEGORY_RAIL)
 
 KeywordManager.update(keyword)
