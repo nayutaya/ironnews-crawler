@@ -14,6 +14,7 @@ FilterTable = (
   re.compile(r'\Ahttp://release\.nikkei\.co\.jp/'), # 理由: title要素に記事名が含まれていないため
   re.compile(r'\Ahttp://rkk\.jp/'), # 理由: title要素に記事名が含まれていないため
   re.compile(r'\Ahttp://www2\.knb\.ne\.jp/'), # 理由: title要素に記事名が含まれていないため
+  re.compile(r'\Ahttp://www\.chugoku-np\.co\.jp/News/Tn'), # 理由: title要素に記事名が含まれていないため
   re.compile(r'\Ahttp://www\.hab\.co\.jp/headline/'), # 理由: title要素に記事名が含まれていないため
   re.compile(r'\Ahttp://www\.iwate-np\.co\.jp/'), # 理由: title要素に記事名が含まれていないため
   re.compile(r'\Ahttp://www\.keidanren\.or\.jp/'), # 理由: title要素に記事名が含まれていないため
