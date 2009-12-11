@@ -41,6 +41,10 @@ class ArticleManager:
     return db.GqlQuery("SELECT * FROM Article ORDER BY created_at DESC").fetch(limit)
 
   @classmethod
+  def unregistered(cls, limit):
+    return db.GqlQuery("SELECT * FROM Article WHERE state = :1 ORDER BY created_at ASC", Article.STATE_UNREGISTERED).fetch(limit)
+
+  @classmethod
   def category_stats(cls):
     return {
       "unknown": db.GqlQuery("SELECT __key__ FROM Article WHERE category = :1", Article.CATEGORY_UNKNOWN).count(),

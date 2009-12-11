@@ -14,7 +14,14 @@ class GetUnregisteredArticles(webapp.RequestHandler):
   def get(self):
     callback = self.request.get("callback")
 
-    result = {}
+    articles = ArticleManager.unregistered(10)
+
+    result = []
+    for article in articles:
+      result.append({
+        "url"  : article.url,
+        "title": article.title,
+      })
 
     json = simplejson.dumps(result, separators=(',',':'))
     if callback != "": json = callback + "(" + json + ")"
