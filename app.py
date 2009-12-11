@@ -14,7 +14,7 @@ class GetUnregisteredArticles(webapp.RequestHandler):
   def get(self):
     callback = self.request.get("callback")
 
-    articles = ArticleManager.unregistered(10)
+    articles = ArticleManager.unregistered(25)
 
     result = []
     for article in articles:
