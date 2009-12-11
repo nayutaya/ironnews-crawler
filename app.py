@@ -28,6 +28,12 @@ class GetUnregisteredArticles(webapp.RequestHandler):
     self.response.headers["Content-Type"] = "text/javascript"
     self.response.out.write(json)
 
+class SetRegisteredArticle(webapp.RequestHandler):
+  def get(self):
+    url = self.request.get("url")
+    ArticleManager.set_registered(url)
+    self.response.out.write("ok")
+
 class HomePage(webapp.RequestHandler):
   def get(self):
     self.response.out.write("hello")
@@ -36,6 +42,7 @@ if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
       (r"/api/get-unregistered-articles", GetUnregisteredArticles),
+      (r"/api/set-registered-article",    SetRegisteredArticle),
       (r"/", HomePage),
     ],
     debug = True)
