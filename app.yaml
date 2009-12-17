@@ -18,6 +18,8 @@ handlers:
   script: dump.py
 - url: /crawler/google-news
   script: crawler_google_news.py
+- url: /feeder/google-news
+  script: feeder_google_news.py
 - url: /cleaner
   script: cleaner.py
 - url: /.*
