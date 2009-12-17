@@ -44,6 +44,9 @@ def set_registered(url):
     article.state = Article.STATE_REGISTERED
     article.put()
 
+def get_articles():
+  return db.GqlQuery("SELECT * FROM Article WHERE state = :1 ORDER BY created_at ASC", Article.STATE_UNREGISTERED).fetch(50)
+
 def add_article(credential, url):
   wsse_token = create_wsse_token(credential["username"], credential["password"])
 
@@ -78,24 +81,24 @@ print "feeder"
 
 credential = read_credential()
 
-articles = db.GqlQuery("SELECT * FROM Article WHERE state = :1 ORDER BY created_at ASC", Article.STATE_UNREGISTERED).fetch(50)
+articles = get_articles()
 urls     = [article.url for article in articles]
 random.shuffle(urls)
 
 #for original_url in urls[0:5]:
 for original_url in urls[0:1]:
-  canonical_url = BookmarkUtility.get_canonical_url(original_url)
   print "---"
   print original_url
 
-  result = add_article(credential, canonical_url)
-  article_id = result["result"]["1"]["article_id"]
-  title      = result["result"]["1"]["title"].encode("utf-8")
+  canonical_url = BookmarkUtility.get_canonical_url(original_url)
+  print canonical_url
 
-  print result
-  print title
-  print article_id
+  result1 = add_article(credential, canonical_url)
+  print result1
 
-  print add_tag(credential, article_id, u"googleニュース")
+  article_id = result1["result"]["1"]["article_id"]
 
-  #set_registered(original_url)
+  result2 = add_tag(credential, article_id, u"googleニュース")
+  print result2
+
+  set_registered(original_url)
