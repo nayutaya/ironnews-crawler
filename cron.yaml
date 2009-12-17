@@ -2,6 +2,9 @@ cron:
 - description: crawler-google-news
   url: /crawler/google-news
   schedule: every 5 minutes
+- description: feeder-google-news
+  url: /feeder/google-news
+  schedule: every 5 minutes
 - description: cleaner
   url: /cleaner
   schedule: every 6 hours
