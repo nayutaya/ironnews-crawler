@@ -4,4 +4,4 @@ cron:
   schedule: every 5 minutes
 - description: cleaner
   url: /cleaner
-  schedule: every 12 hours
+  schedule: every 6 hours
