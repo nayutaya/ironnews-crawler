@@ -18,5 +18,7 @@ handlers:
   script: dump.py
 - url: /crawler/google-news
   script: crawler_google_news.py
+- url: /cleaner
+  script: cleaner.py
 - url: /.*
   script: app.py
