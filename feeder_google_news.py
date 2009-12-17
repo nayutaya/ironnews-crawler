@@ -57,6 +57,19 @@ def add_article(credential, url):
   finally:
     io.close()
 
+def add_tag(credential, article_id, tag):
+  wsse_token = create_wsse_token(credential["username"], credential["password"])
+
+  request = urllib2.Request(
+    url = "http://ironnews.nayutaya.jp/api/add_tags?" + urllib.urlencode({"article_id": article_id, "tag1": tag.encode("utf-8")}))
+  request.add_header("X-WSSE", wsse_token)
+
+  io = urllib2.urlopen(request)
+  try:
+    return simplejson.loads(io.read())
+  finally:
+    io.close()
+
 
 print "Content-Type: text/plain"
 print ""
@@ -64,8 +77,6 @@ print ""
 print "feeder"
 
 credential = read_credential()
-
-# TODO: 記事にタグを打つ
 
 articles = db.GqlQuery("SELECT * FROM Article WHERE state = :1 ORDER BY created_at ASC", Article.STATE_UNREGISTERED).fetch(50)
 urls     = [article.url for article in articles]
@@ -78,11 +89,13 @@ for original_url in urls[0:1]:
   print original_url
 
   result = add_article(credential, canonical_url)
-  aid    = result["result"]["1"]["article_id"]
-  title  = result["result"]["1"]["title"].encode("utf-8")
+  article_id = result["result"]["1"]["article_id"]
+  title      = result["result"]["1"]["title"].encode("utf-8")
 
   print result
   print title
-  print aid
-  #set_registered(original_url)
+  print article_id
 
+  print add_tag(credential, article_id, u"googleニュース")
+
+  #set_registered(original_url)
