@@ -85,8 +85,7 @@ articles = get_articles()
 urls     = [article.url for article in articles]
 random.shuffle(urls)
 
-#for original_url in urls[0:5]:
-for original_url in urls[0:1]:
+for original_url in urls[0:3]:
   print "---"
   print original_url
 
