@@ -8,9 +8,13 @@ import time
 import base64
 import sha
 import random
+import urllib
+import urllib2
+import re
 from google.appengine.ext import db
 from article_manager import Article
 
+import simplejson
 from bookmark_utility import BookmarkUtility
 
 def read_credential():
@@ -23,13 +27,35 @@ def read_credential():
     f.close()
 
 def create_wsse_token(username, password):
-  created = datetime.datetime.now().isoformat() + "Z"
-  nonce   = base64.b64encode(sha.sha(str(time.time() + random.random())).digest())
-  digest  = base64.b64encode(sha.sha(nonce + created + password).digest())
+  created = re.sub(u"\.\d+$", "", datetime.datetime.now().isoformat()) + "Z"
+  nonce   = sha.sha(str(time.time() + random.random())).digest()
+  digest  = sha.sha(nonce + created + password).digest()
+
+  nonce64  = base64.b64encode(nonce)
+  digest64 = base64.b64encode(digest)
 
   format = 'UsernameToken Username="%(u)s", PasswordDigest="%(p)s", Nonce="%(n)s", Created="%(c)s"'
-  value  = dict(u = username, p = digest, n = nonce, c = created)
+  value  = dict(u = username, p = digest64, n = nonce64, c = created)
   return format % value
+
+def set_registered(url):
+  article = db.GqlQuery("SELECT * FROM Article WHERE url = :1 LIMIT 1", url).get()
+  if article:
+    article.state = Article.STATE_REGISTERED
+    article.put()
+
+def add_article(credential, url):
+  wsse_token = create_wsse_token(credential["username"], credential["password"])
+
+  request = urllib2.Request(
+    url = "http://ironnews.nayutaya.jp/api/add_article?" + urllib.urlencode({"url1": url}))
+  request.add_header("X-WSSE", wsse_token)
+
+  io = urllib2.urlopen(request)
+  try:
+    return simplejson.loads(io.read())
+  finally:
+    io.close()
 
 
 print "Content-Type: text/plain"
@@ -38,19 +64,25 @@ print ""
 print "feeder"
 
 credential = read_credential()
-wsse_token = create_wsse_token(credential["username"], credential["password"])
-print wsse_token
 
-# TODO: WSSE認証
-# TODO: 未登録記事を登録記事に状態変更
-# TODO: 記事の登録
 # TODO: 記事にタグを打つ
 
 articles = db.GqlQuery("SELECT * FROM Article WHERE state = :1 ORDER BY created_at ASC", Article.STATE_UNREGISTERED).fetch(50)
 urls     = [article.url for article in articles]
 random.shuffle(urls)
 
-for original_url in urls[0:5]:
+#for original_url in urls[0:5]:
+for original_url in urls[0:1]:
   canonical_url = BookmarkUtility.get_canonical_url(original_url)
+  print "---"
   print original_url
-  print canonical_url
+
+  result = add_article(credential, canonical_url)
+  aid    = result["result"]["1"]["article_id"]
+  title  = result["result"]["1"]["title"].encode("utf-8")
+
+  print result
+  print title
+  print aid
+  #set_registered(original_url)
+
