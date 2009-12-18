@@ -10,7 +10,7 @@ print ""
 print "cleaner"
 
 now    = datetime.datetime.now()
-expire = now - datetime.timedelta(days = 10)
+expire = now - datetime.timedelta(days = 7)
 
 print "now    : " + now.strftime("%Y-%m-%d %H:%M:%S")
 print "expire : " + expire.strftime("%Y-%m-%d %H:%M:%S")
