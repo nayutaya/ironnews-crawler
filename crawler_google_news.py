@@ -8,7 +8,7 @@ from article_manager import ArticleManager
 from keyword_manager import KeywordManager
 from google_news import GoogleNews
 
-from bookmark_utility import BookmarkUtility
+from ironnews_utility import IronnewsUtility
 
 print "Content-Type: text/plain"
 print ""
@@ -25,11 +25,11 @@ for article in articles:
   print "---"
   print url
   print title.encode("utf-8")
-  if BookmarkUtility.reject(url):
+  if IronnewsUtility.reject(url):
     print "reject!"
     continue
 
-  url2 = BookmarkUtility.get_canonical_url(url)
+  url2 = IronnewsUtility.get_canonical_url(url)
   if url2 != url:
     print "canonical! " + url2
 

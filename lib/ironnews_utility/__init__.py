@@ -5,7 +5,7 @@ import re
 from canonical_table import CanonicalTable
 from filter_table import FilterTable
 
-class BookmarkUtility:
+class IronnewsUtility:
   @classmethod
   def get_canonical_url(cls, url):
     url1 = url2 = url

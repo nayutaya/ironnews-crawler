@@ -15,7 +15,7 @@ from google.appengine.ext import db
 from article_manager import Article
 
 import simplejson
-from bookmark_utility import BookmarkUtility
+from ironnews_utility import IronnewsUtility
 
 def read_credential():
   f = open("config/ironnews.id")
@@ -89,7 +89,7 @@ for original_url in urls[0:3]:
   print "---"
   print original_url
 
-  canonical_url = BookmarkUtility.get_canonical_url(original_url)
+  canonical_url = IronnewsUtility.get_canonical_url(original_url)
   print canonical_url
 
   result1 = add_article(credential, canonical_url)
