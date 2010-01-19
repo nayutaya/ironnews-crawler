@@ -16,5 +16,6 @@ CanonicalTable = (
   (re.compile(r'\A(http://www\.jiji\.com/.+)&n=1\Z'), r'\1'),
   (re.compile(r'\A(http://www\.jiji\.com/jc/c\?g=.+?)&rel=j7(&k=\d+)\Z'), r'\1\2'),
   (re.compile(r'\A(http://www\.tetsudo\.com/.+)\?tag=as\.rss\Z'), r'\1'),
+  (re.compile(r'\A(http://www\.tokyo-np\.co\.jp/.+)\?ref=rank'), r'\1'),
   (re.compile(r'\Ahttp://slashdot\.jp/articles/(\d+/\d+/\d+/\d+)\.shtml'), r'http://slashdot.jp/article.pl?sid=\1'),
 )
